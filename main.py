@@ -25,7 +25,6 @@ st.markdown(
 
     - `Référence article`
     - `Désignation article`
-    - `Code - Intitulé famille`
     - `Qté stock réel`
 
     > Une extraction Sage permet de récupérer ces colonnes ainsi que d'autres,
@@ -37,7 +36,6 @@ st.markdown(
 
     - `Référence article`
     - `Désignation article`
-    - `Code - Intitulé famille`
     - `Qté vendues`
     - `Chiffre d'affaires HT`
 
