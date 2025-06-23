@@ -93,7 +93,6 @@ def preparer_donnees(stocks, ventes):
     colonnes_selection = [
         "Référence Article",
         "Désignation Article_x",
-        "Code - Intitulé Famille",
         "Qté Vendues",
         "Qté Stock Réel",
         "Chiffre d'affaires HT",
