@@ -138,18 +138,19 @@ with tab2:
 
     st.markdown("""
     Téléversez deux fichiers Excel contenant les bons de livraison, dans l’ordre :
-    - 📄 `Etat au mois actuel`
-    - 📄 `Etat au mois précédent`
+    - 📄 `Dernier bon de livraison avec remarques`
+    - 📄 `Avant dernier bon de livraison avec remarques`
     """)
 
     col1, col2 = st.columns(2)
 
     with col1:
-        fichier_bls_t = st.file_uploader("📥 Fichier actuel",
+        fichier_bls_t = st.file_uploader("📥 Dernier fichier avec remarques",
                                          type=["xlsx"], key="BLS_de_ce_mois")
     with col2:
         fichier_bls_tm1 = st.file_uploader("📥 Fichier précédent",
-                                           type=["xlsx"], key="BLS_mois_dernier")
+                                           type=["xlsx"],
+                                           key="Avant dernier fichier avec remarques")
 
     if fichier_bls_t and fichier_bls_tm1:
         try:
