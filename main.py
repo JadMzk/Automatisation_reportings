@@ -23,8 +23,8 @@ st.markdown(
 
     #### 📦 Le fichier de **stocks** doit contenir les colonnes suivantes :
 
-    - `Référence article`
-    - `Désignation article`
+    - `Référence Article`
+    - `Désignation Article`
     - `Qté stock réel`
 
     > Une extraction Sage permet de récupérer ces colonnes ainsi que d'autres,
@@ -34,8 +34,8 @@ st.markdown(
 
     #### 🛒 Le fichier de **ventes** doit contenir les colonnes suivantes :
 
-    - `Référence article`
-    - `Désignation article`
+    - `Référence Article`
+    - `Désignation Article`
     - `Qté vendues`
     - `Chiffre d'affaires HT`
 
