@@ -3,6 +3,7 @@ import pandas as pd
 import io
 from fonctions import read_table, preparer_donnees
 
+# Initialisation de l'application Streamlit
 st.set_page_config(page_title="Taux de rotation", layout="wide")
 st.title("📦 Calcul automatique du taux de rotation")
 
@@ -42,11 +43,12 @@ st.markdown(
 
     > Une extraction Sage (ventes par article) permet de récupérer ces colonnes ainsi que d'autres,
     > mais **seules celles-ci sont nécessaires**.
+    ⚠️ Les deux tables doivent concerner la **même période** pour un résultat cohérent.
     """
 )
 
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns(2) # Affichage de l'interface en deux colonnes
 with col1:
     fichier_stocks = st.file_uploader(
         "📦 Fichier des **stocks** (.csv ou .xlsx)", type=["csv", "xlsx"], key="stocks"
@@ -66,7 +68,8 @@ if fichier_ventes and fichier_stocks:
         st.subheader("📊 Résultat")
         st.dataframe(df_final)
 
-        buffer = io.BytesIO()
+        buffer = io.BytesIO() # Création d'un buffer pour l'export Excel
+        # (sans sauvegarde sur disque mais en RAM)
         with pd.ExcelWriter(buffer, engine="xlsxwriter") as writer:
             df_final.to_excel(writer, index=False, sheet_name="Taux de rotation")
 
