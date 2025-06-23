@@ -85,50 +85,50 @@ with tab1:
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
 
+            # Création de graphs pour avoir des insights pertinents
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.subheader("📊 Top 10 par chiffre d'affaires")
+
+            top_CA = df_final.sort_values("Chiffre d'affaires HT", ascending=False).head(10)
+
+            fig1, ax1 = plt.subplots(figsize=(8, 6))
+            sns.barplot(
+                data=top_CA,
+                x="Taux de rotation",
+                y="Désignation Article",
+                palette="tab10",
+                ax=ax1
+            )
+            ax1.set_title("Top 10 produits par CA - Taux de rotation en abscisse")
+            ax1.set_xlabel("Taux de rotation")
+            ax1.set_ylabel("Désignation Article")
+            ax1.grid(True)
+            st.pyplot(fig1)
+
+        with col2:
+            st.subheader("📊 Top 10 par taux de rotation")
+
+            top_rotation = df_final.sort_values("Taux de rotation", ascending=False).head(10)
+
+            fig2, ax2 = plt.subplots(figsize=(8, 6))
+            sns.barplot(
+                data=top_rotation,
+                x="Chiffre d'affaires HT",
+                y="Désignation Article",
+                palette="tab10",
+                ax=ax2
+            )
+            ax2.set_title("Top 10 par taux de rotation - CA en abscisse")
+            ax2.set_xlabel("Chiffre d'affaires HT en MAD")
+            ax2.set_ylabel("Désignation Article")
+            ax2.grid(True)
+            st.pyplot(fig2)
+
         except Exception as e:
             st.error(f"Erreur pendant le traitement : {e}")
 
-
-# Création de graphs pour avoir des insights pertinents
-col1, col2 = st.columns(2)
-
-with col1:
-    st.subheader("📊 Top 10 par chiffre d'affaires")
-
-    top_CA = df_final.sort_values("Chiffre d'affaires HT", ascending=False).head(10)
-
-    fig1, ax1 = plt.subplots(figsize=(8, 6))
-    sns.barplot(
-        data=top_CA,
-        x="Taux de rotation",
-        y="Désignation Article",
-        palette="tab10",
-        ax=ax1
-    )
-    ax1.set_title("Top 10 produits par CA - Taux de rotation en abscisse")
-    ax1.set_xlabel("Taux de rotation")
-    ax1.set_ylabel("Désignation Article")
-    ax1.grid(True)
-    st.pyplot(fig1)
-
-with col2:
-    st.subheader("📊 Top 10 par taux de rotation")
-
-    top_rotation = df_final.sort_values("Taux de rotation", ascending=False).head(10)
-
-    fig2, ax2 = plt.subplots(figsize=(8, 6))
-    sns.barplot(
-        data=top_rotation,
-        x="Chiffre d'affaires HT",
-        y="Désignation Article",
-        palette="tab10",
-        ax=ax2
-    )
-    ax2.set_title("Top 10 par taux de rotation - CA en abscisse")
-    ax2.set_xlabel("Chiffre d'affaires HT en MAD")
-    ax2.set_ylabel("Désignation Article")
-    ax2.grid(True)
-    st.pyplot(fig2)
 
 
 with tab2:
