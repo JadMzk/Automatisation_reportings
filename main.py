@@ -148,10 +148,9 @@ with tab2:
         fichier_bls_t = st.file_uploader("📥 Dernier fichier avec remarques",
                                          type=["xlsx"], key="BLS_de_ce_mois")
     with col2:
-        fichier_bls_tm1 = st.file_uploader("📥 Fichier précédent",
+        fichier_bls_tm1 = st.file_uploader("📥 Avant dernier fichier avec remarques",
                                            type=["xlsx"],
-                                           key="Avant dernier fichier avec remarques")
-
+                                           key="BLS_t_m1")
     if fichier_bls_t and fichier_bls_tm1:
         try:
             # Lecture avec skiprows=2
