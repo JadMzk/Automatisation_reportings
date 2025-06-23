@@ -43,6 +43,7 @@ st.markdown(
 
     > Une extraction Sage (ventes par article) permet de récupérer ces colonnes ainsi que d'autres,
     > mais **seules celles-ci sont nécessaires**.
+
     ⚠️ Les deux tables doivent concerner la **même période** pour un résultat cohérent.
     """
 )
