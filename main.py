@@ -92,18 +92,18 @@ with tab2:
 
     st.markdown("""
     Téléversez deux fichiers Excel contenant les bons de livraison, dans l’ordre :
-    - 📄 `etat_blst.xlsx` (mois actuel)
-    - 📄 `etat_blstm1.xlsx` (mois précédent)
+    - 📄 Etat au mois actuel
+    - 📄 Etat au mois précédent
     """)
 
     col1, col2 = st.columns(2)
 
     with col1:
-        fichier_bls_t = st.file_uploader("📥 Fichier actuel (bls_t)",
-                                         type=["xlsx"], key="bls_t")
+        fichier_bls_t = st.file_uploader("📥 Fichier actuel",
+                                         type=["xlsx"], key="BLS_de_ce_mois")
     with col2:
-        fichier_bls_tm1 = st.file_uploader("📥 Fichier précédent (bls_tm1)",
-                                           type=["xlsx"], key="bls_tm1")
+        fichier_bls_tm1 = st.file_uploader("📥 Fichier précédent",
+                                           type=["xlsx"], key="BLS_mois_dernier")
 
     if fichier_bls_t and fichier_bls_tm1:
         try:
@@ -122,8 +122,7 @@ with tab2:
             df_bls = pd.merge(
                 bls_t,
                 bls_tm1[["Référence", "REMARQUES_t_1"]],
-                on="Référence",
-                how="left"
+                on="Référence"
             )
 
             st.success("✅ Fusion réussie ! Aperçu ci-dessous :")
