@@ -92,8 +92,8 @@ with tab2:
 
     st.markdown("""
     Téléversez deux fichiers Excel contenant les bons de livraison, dans l’ordre :
-    - 📄 Etat au mois actuel
-    - 📄 Etat au mois précédent
+    - 📄 `Etat au mois actuel`
+    - 📄 `Etat au mois précédent`
     """)
 
     col1, col2 = st.columns(2)
