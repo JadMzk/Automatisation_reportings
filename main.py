@@ -158,7 +158,6 @@ with tab2:
                                            key="BLS_t_m1")
     if fichier_bls_t and fichier_bls_tm1:
         try:
-            # Lecture avec skiprows=2
             bls_t = pd.read_excel(fichier_bls_t, sheet_name="Feuil2")
             bls_tm1 = pd.read_excel(fichier_bls_tm1, sheet_name="Feuil2")
 
