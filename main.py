@@ -200,18 +200,18 @@ with tab3:
     Cette fonctionnalité vous permet de **mettre à jour automatiquement les remarques**
     d’un fichier de commandes en comparant avec un fichier précédent.
 
-    - 📄 `Fichier précédent` : contient les remarques existantes
-    - 📄 `Fichier actuel` : à mettre à jour avec les remarques précédentes
+    - 📄 `Fichier ancien` : contient les anciennes remarques
+    - 📄 `Fichier nouveau` : contient les nouvelles remarques
     """)
 
     col1, col2 = st.columns(2)
 
     with col1:
-        ancien_fichier = st.file_uploader("📥 Fichier précédent",
+        ancien_fichier = st.file_uploader("📥 Fichier ancien",
                                           type=["xlsx"],
                                           key="ancien_suivi")
     with col2:
-        nouveau_fichier = st.file_uploader("📥 Fichier actuel",
+        nouveau_fichier = st.file_uploader("📥 Fichier nouveau",
                                            type=["xlsx"],
                                            key="nouveau_suivi")
 
