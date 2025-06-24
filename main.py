@@ -4,8 +4,7 @@ import io
 from fonctions import read_table, preparer_donnees
 import matplotlib.pyplot as plt
 import seaborn as sns
-from fonctions2 import traiter_fichiers
-import os
+import fonctions2 as f2
 
 # Initialisation de l'app
 st.set_page_config(page_title="Automatisation des reporting", layout="wide")
@@ -193,45 +192,50 @@ with tab2:
         except Exception as e:
             st.error(f"Erreur pendant la fusion : {e}")
 
+
 with tab3:
-    st.header("🧾 Suivi de commandes Excel")
+    st.header("🧾 Suivi des commandes")
 
     st.markdown("""
-    Cette fonctionnalité permet de **reporter automatiquement les remarques** d’un ancien fichier Excel de bons de livraison vers un nouveau fichier.
+    Cette fonctionnalité vous permet de **mettre à jour automatiquement les remarques**
+    d’un fichier de commandes en comparant avec un fichier précédent.
 
-    👉 Assurez-vous que les colonnes "N° Pièce", "Référence" et "Remarques" sont bien présentes.
+    - 📄 `Fichier précédent` : contient les remarques existantes
+    - 📄 `Fichier actuel` : à mettre à jour avec les remarques précédentes
     """)
 
-    ancien = st.file_uploader("📤 Charger l'ancien fichier", type=["xlsx"], key="ancien_file")
-    nouveau = st.file_uploader("📤 Charger le nouveau fichier", type=["xlsx"], key="nouveau_file")
+    col1, col2 = st.columns(2)
 
-    if ancien and nouveau:
-        if st.button("⚙️ Lancer la mise à jour"):
-            with st.spinner("Traitement en cours..."):
-                try:
-                    # Sauvegarde temporaire des fichiers uploadés
-                    temp_ancien = os.path.join(os.getcwd(), "ancien_temp.xlsx")
-                    temp_nouveau = os.path.join(os.getcwd(), "nouveau_temp.xlsx")
+    with col1:
+        ancien_fichier = st.file_uploader("📥 Fichier précédent",
+                                          type=["xlsx"],
+                                          key="ancien_suivi")
+    with col2:
+        nouveau_fichier = st.file_uploader("📥 Fichier actuel",
+                                           type=["xlsx"],
+                                           key="nouveau_suivi")
 
-                    with open(temp_ancien, "wb") as f:
-                        f.write(ancien.getbuffer())
+    if ancien_fichier and nouveau_fichier:
+        try:
 
-                    with open(temp_nouveau, "wb") as f:
-                        f.write(nouveau.getbuffer())
+            # Traitement
+            df_resultat = f2.traiter_fichiers(ancien_fichier, nouveau_fichier)
 
-                    # Appel de la fonction principale
-                    path_result = traiter_fichiers(temp_ancien, temp_nouveau)
+            st.success("✅ Mise à jour effectuée avec succès !")
+            st.dataframe(df_resultat)
 
-                    st.success("✅ Traitement terminé avec succès.")
+            # Export Excel
+            buffer = io.BytesIO()
+            with pd.ExcelWriter(buffer, engine="xlsxwriter") as writer:
+                df_resultat.to_excel(writer, index=False, sheet_name="Suivi commandé")
+            buffer.seek(0)
 
-                    # Télécharger le fichier final
-                    with open(path_result, "rb") as f:
-                        st.download_button(
-                            label="📥 Télécharger le fichier final",
-                            data=f,
-                            file_name=os.path.basename(path_result),
-                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                        )
+            st.download_button(
+                label="📥 Télécharger le fichier mis à jour",
+                data=buffer,
+                file_name="suivi_commandes_mis_a_jour.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
 
-                except Exception as e:
-                    st.error(f"❌ Erreur pendant le traitement : {e}")
+        except Exception as e:
+            st.error(f"Erreur pendant le traitement : {e}")

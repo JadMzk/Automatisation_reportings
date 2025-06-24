@@ -1,112 +1,74 @@
-import datetime
-import tempfile
-import win32com.client as win32
-import pythoncom
-import os
-import sys
-import time
+import pandas as pd
+import re
 
 
-class ExcelManager:
-    def __init__(self):
-        self._clean_com_cache()
-        self.excel = None
+def trouver_ligne_header(filepath, mot_clef="N° Pièce", sheet_name=0):
+    # On lit les 10 premières lignes du fichier pour chercher le header
+    preview = pd.read_excel(
+        filepath, sheet_name=sheet_name, nrows=10, header=None
+    )
+    for i, row in preview.iterrows():
+        if row.astype(str).str.contains(mot_clef).any():
+            return i
+    raise ValueError(f"Impossible de trouver une ligne contenant '{mot_clef}'")
 
-    def __enter__(self):
-        pythoncom.CoInitialize()
-        self._kill_excel()
-        self.excel = win32.gencache.EnsureDispatch('Excel.Application')
-        self.excel.Visible = False
-        self.excel.DisplayAlerts = False
-        self.excel.ScreenUpdating = False
-        self.excel.EnableEvents = False
-        return self.excel
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self._cleanup()
+def lire_avec_header_auto(filepath, sheet_name=0, mot_clef="N° Pièce"):
+    header_line = trouver_ligne_header(
+        filepath, mot_clef=mot_clef, sheet_name=sheet_name
+    )
+    df = pd.read_excel(filepath, sheet_name=sheet_name, skiprows=header_line)
+    df.columns = df.columns.str.strip()
+    return df
 
-    def _clean_com_cache(self):
-        """Nettoyage du cache COM pour éviter les conflits"""
-        cache_dir = os.path.join(sys.prefix, 'Lib', 'site-packages',
-                                 'win32com', 'gen_py')
-        if os.path.exists(cache_dir):
-            for f in os.listdir(cache_dir):
-                try: os.remove(os.path.join(cache_dir, f))
-                except:
-                    pass
 
-    def _kill_excel(self):
-        """Fermeture forcée de tous les processus Excel"""
-        os.system('taskkill /f /im excel.exe > nul 2>&1')
-        time.sleep(1)
-
-    def _cleanup(self):
-        """Nettoyage en profondeur des ressources COM"""
-        try:
-            if self.excel:
-                self.excel.DisplayAlerts = False
-                self.excel.Quit()
-                del self.excel
-        except: pass
-        pythoncom.CoUninitialize()
-        self._kill_excel()
-        time.sleep(0.5)
+def nettoyer_chaine(s):
+    if pd.isna(s):
+        return ''
+    s = str(s)
+    s = re.sub(r'[\s\u00A0]+', '', s)  # supprime espaces classiques et insécables
+    return s.upper()
 
 
 def traiter_fichiers(ancien_path, nouveau_path):
-    with ExcelManager() as excel:
-        try:
-            # Ouverture fichiers
-            wb_ancien = excel.Workbooks.Open(ancien_path, ReadOnly=True, CorruptLoad=1)
-            ws_ancien = wb_ancien.Sheets(1)
+    try:
+        df_ancien = lire_avec_header_auto(ancien_path)
+        df_nouveau = lire_avec_header_auto(nouveau_path)
 
-            wb_nouveau = excel.Workbooks.Open(nouveau_path, CorruptLoad=1)
-            ws_nouveau = wb_nouveau.Sheets(1)
+        df_ancien.columns = df_ancien.columns.str.strip()
+        df_nouveau.columns = df_nouveau.columns.str.strip()
 
-            # Créer la colonne Remarques si elle n'existe pas
-            header_nouveau = [cell.Value for cell in ws_nouveau.Rows(1)]
-            colonne_remarques = 14  # Colonne N (colonne 14)
+        if "Remarques" not in df_ancien.columns:
+            raise ValueError(
+                "La colonne 'Remarques' est absente du fichier ancien"
+            )
+        if "Remarques" not in df_nouveau.columns:
+            raise ValueError(
+                "La colonne 'Remarques' est absente du fichier nouveau"
+            )
 
-            if "Remarques" not in header_nouveau:
-                ws_nouveau.Columns(colonne_remarques).Insert()
-                ws_nouveau.Cells(1, colonne_remarques).Value = "Remarques"
+        # Création de la clé pour la jointure dans les deux df avec nettoyage
+        df_ancien['key'] = df_ancien.apply(
+            lambda row: nettoyer_chaine(row['Référence']) + "__" +
+                        nettoyer_chaine(row['Désignation']),
+            axis=1
+        )
+        df_nouveau['key'] = df_nouveau.apply(
+            lambda row: nettoyer_chaine(row['Référence']) + "__" +
+                        nettoyer_chaine(row['Désignation']),
+            axis=1
+        )
 
-            # Collecte des données ancien fichier
-            donnees = {}
-            last_row = ws_ancien.UsedRange.Rows.Count
+        # Mapping clé -> remarques ancien
+        remarques_map = df_ancien.set_index('key')['Remarques'].to_dict()
 
-            for row in range(2, last_row + 1):
-                key = (
-                    str(ws_ancien.Cells(row, 2).Value).strip().upper(),  # N° Pièce
-                    str(ws_ancien.Cells(row, 5).Value).strip().upper()   # Réf. Article
-                )
-                donnees[key] = ws_ancien.Cells(row, colonne_remarques).Value
+        # Ajout colonne 'Remarques_ancien' dans df_nouveau
+        df_nouveau['Remarques_ancien'] = df_nouveau['key'].map(remarques_map)
 
-            # Application sur nouveau fichier
-            last_row_nouveau = ws_nouveau.UsedRange.Rows.Count
+        # Suppression clé temporaire
+        df_nouveau.drop(columns=['key'], inplace=True)
 
-            for row in range(2, last_row_nouveau + 1):
-                key = (
-                    str(ws_nouveau.Cells(row, 2).Value).strip().upper(),
-                    str(ws_nouveau.Cells(row, 5).Value).strip().upper()
-                )
-                if key in donnees:
-                    ws_nouveau.Cells(row, colonne_remarques).Value = donnees[key]
+        return df_nouveau
 
-            # Chemin temporaire pour Streamlit
-            date_str = datetime.datetime.now().strftime("%d%m%y_%H%M%S")
-            temp_dir = tempfile.mkdtemp()
-            filename = f"Suivi_commandes_{date_str}.xlsx"
-            save_path = os.path.join(temp_dir, filename)
-
-            wb_nouveau.SaveAs(save_path)
-            return save_path
-
-        except Exception as e:
-            raise Exception(f"Erreur : {str(e)}")
-
-        finally:
-            try: wb_ancien.Close(False)
-            except: pass
-            try: wb_nouveau.Close(False)
-            except: pass
+    except Exception as e:
+        raise Exception(f"Erreur dans traitement fichiers: {e}")
