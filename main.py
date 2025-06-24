@@ -140,8 +140,8 @@ with tab2:
 
     st.markdown("""
     Téléversez deux fichiers Excel contenant les bons de livraison, dans l’ordre :
-    - 📄 `Dernier bon de livraison avec remarques`
-    - 📄 `Avant dernier bon de livraison avec remarques`
+    - 📄 `Fichier des bons de livraison avec nouvelles remarques`
+    - 📄 `Fichier des bons de livraison avec anciennes remarques`
 
     ⚠️ Assurez-vous que les deux fichiers n'ont pas de ligne vide en haut, ou de lignes
     qui ne contiennent qu'un titre et que les colonnes sont correctement nommées.
@@ -150,10 +150,10 @@ with tab2:
     col1, col2 = st.columns(2)
 
     with col1:
-        fichier_bls_t = st.file_uploader("📥 Dernier fichier avec remarques",
+        fichier_bls_t = st.file_uploader("📥 Fichier avec nouvelles remarques",
                                          type=["xlsx"], key="BLS_de_ce_mois")
     with col2:
-        fichier_bls_tm1 = st.file_uploader("📥 Avant dernier fichier avec remarques",
+        fichier_bls_tm1 = st.file_uploader("📥 Fichier avec anciennes remarques",
                                            type=["xlsx"],
                                            key="BLS_t_m1")
     if fichier_bls_t and fichier_bls_tm1:
@@ -163,8 +163,8 @@ with tab2:
             bls_tm1 = pd.read_excel(fichier_bls_tm1, sheet_name="Feuil2")
 
             # Nettoyage
-            bls_t.columns.values[-1] = "REMARQUES_t"
-            bls_tm1.columns.values[-1] = "REMARQUES_t_1"
+            bls_t.columns.values[-1] = "REMARQUES_nouvelles"
+            bls_tm1.columns.values[-1] = "REMARQUES_anciennes"
 
             bls_t.columns = bls_t.columns.str.strip()
             bls_tm1.columns = bls_tm1.columns.str.strip()
@@ -172,7 +172,7 @@ with tab2:
             # Fusion
             df_bls = pd.merge(
                 bls_t,
-                bls_tm1[["Référence", "REMARQUES_t_1"]],
+                bls_tm1[["Référence", "REMARQUES_anciennes"]],
                 on="Référence"
             )
 
