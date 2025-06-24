@@ -51,7 +51,7 @@ with tab1:
         > Une extraction Sage (ventes par article) permet de récupérer ces colonnes ainsi que d'autres,
         > mais **seules celles-ci sont nécessaires**.
 
-        ⚠️ Les deux tables doivent concerner la **même période** pour un résultat cohérent.
+        ⚠️ Les deux tables doivent concerner la **même période** (idéalement 1 an pour un résultat cohérent.
         """
     )
 
@@ -142,6 +142,8 @@ with tab2:
     Téléversez deux fichiers Excel contenant les bons de livraison, dans l’ordre :
     - 📄 `Dernier bon de livraison avec remarques`
     - 📄 `Avant dernier bon de livraison avec remarques`
+    ⚠️ Assurez-vous que les deux fichiers n'ont pas de ligne vide en haut, ou de lignes
+    qui ne contiennent qu'un titre et que les colonnes sont correctement nommées.
     """)
 
     col1, col2 = st.columns(2)
@@ -156,8 +158,8 @@ with tab2:
     if fichier_bls_t and fichier_bls_tm1:
         try:
             # Lecture avec skiprows=2
-            bls_t = pd.read_excel(fichier_bls_t, sheet_name="Feuil2", skiprows=2)
-            bls_tm1 = pd.read_excel(fichier_bls_tm1, sheet_name="Feuil2", skiprows=2)
+            bls_t = pd.read_excel(fichier_bls_t, sheet_name="Feuil2")
+            bls_tm1 = pd.read_excel(fichier_bls_tm1, sheet_name="Feuil2")
 
             # Nettoyage
             bls_t.columns.values[-1] = "REMARQUES_t"
