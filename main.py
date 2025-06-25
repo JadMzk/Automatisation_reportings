@@ -146,6 +146,9 @@ with tab2:
     ⚠️ Assurez-vous que les deux fichiers n'ont pas de ligne vide en haut, ou de lignes
     qui ne contiennent qu'un titre et que les colonnes sont correctement nommées.
 
+    Assurez-vous également que la feuille de calcul est nommée
+                `Feuil2` dans les deux fichiers.
+
     Les colonnes doivent contenir au moins :
     - `Référence` : la référence du bon de livraison
     - `REMARQUES` : les remarques des bons de livraison
