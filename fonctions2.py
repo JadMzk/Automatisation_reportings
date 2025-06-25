@@ -14,6 +14,8 @@ def trouver_ligne_header(filepath, mot_clef="N° Pièce", sheet_name=0):
 
 
 def lire_avec_header_auto(filepath, sheet_name=0, mot_clef="N° Pièce"):
+    """    Lit un fichier Excel et détermine automatiquement la ligne d'en-tête
+    en cherchant un mot clé spécifique dans les premières lignes."""
     header_line = trouver_ligne_header(
         filepath, mot_clef=mot_clef, sheet_name=sheet_name
     )
@@ -27,10 +29,13 @@ def nettoyer_chaine(s):
         return ''
     s = str(s)
     s = re.sub(r'[\s\u00A0]+', '', s)  # supprime espaces classiques et insécables
+    # Plus robuste qu'un simple strip()
     return s.upper()
 
 
 def traiter_fichiers(ancien_path, nouveau_path):
+    """    Traite deux fichiers Excel pour fusionner les remarques
+    des bons de livraison anciens et nouveaux."""
     try:
         df_ancien = lire_avec_header_auto(ancien_path)
         df_nouveau = lire_avec_header_auto(nouveau_path)
@@ -48,6 +53,8 @@ def traiter_fichiers(ancien_path, nouveau_path):
             )
 
         # Création de la clé pour la jointure dans les deux df avec nettoyage
+        # Double clé : Référence + Désignation qui est unique
+        # (ne correspond qu'à une seule ligne)
         df_ancien['key'] = df_ancien.apply(
             lambda row: nettoyer_chaine(row['Référence']) + "__" +
                         nettoyer_chaine(row['Désignation']),
