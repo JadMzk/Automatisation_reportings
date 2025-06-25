@@ -159,9 +159,9 @@ with tab2:
     if fichier_bls_t and fichier_bls_tm1:
         try:
             bls_t = f2.lire_avec_header_auto(fichier_bls_t, sheet_name="Feuil2",
-                                             mot_clef= "N° Compte Client")
+                                             mot_clef="N° Compte Client")
             bls_tm1 = f2.lire_avec_header_auto(fichier_bls_tm1, sheet_name="Feuil2",
-                                               mot_clef= "N° Compte Client")
+                                               mot_clef="N° Compte Client")
 
             # Nettoyage
             bls_t.columns.values[-1] = "REMARQUES_nouvelles"
