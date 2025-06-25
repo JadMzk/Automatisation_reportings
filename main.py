@@ -145,6 +145,14 @@ with tab2:
 
     ⚠️ Assurez-vous que les deux fichiers n'ont pas de ligne vide en haut, ou de lignes
     qui ne contiennent qu'un titre et que les colonnes sont correctement nommées.
+
+    Les colonnes doivent contenir au moins :
+    - `Référence` : la référence du bon de livraison
+    - `REMARQUES` : les remarques des bons de livraison
+    - `N° Compte Client` : le numéro de compte client (pour la fusion)
+
+    Les colonnes nommés ainsi sont nécessaires pour que la fusion fonctionne correctement.
+    Si les noms de colonnes sont différents, vous pouvez les renommer dans le fichier Excel
     """)
 
     col1, col2 = st.columns(2)
@@ -206,6 +214,14 @@ with tab3:
 
     - 📄 `Fichier ancien` : contient les anciennes remarques
     - 📄 `Fichier nouveau` : contient les nouvelles remarques
+
+    Les colonnes nécessaires pour le traitement sont :
+    - `Référence` : la référence de la commande
+    - `Désignation` : la désignation de l'article commandé
+    - `Remarques` : les remarques associées à l'article
+
+    Assurez-vous que les colonnes sont correctement nommées dans les fichiers Excel.
+    Si les noms de colonnes sont différents, vous pouvez les renommer dans le fichier Excel
     """)
 
     col1, col2 = st.columns(2)
