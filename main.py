@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import io
-from fonctions import read_table, preparer_donnees
+from fonctions import preparer_donnees
 import matplotlib.pyplot as plt
 import seaborn as sns
 import fonctions2 as f2
@@ -45,7 +45,7 @@ with tab1:
 
         - `Référence Article`
         - `Désignation Article`
-        - `Qté vendues`
+        - `Qté Vendues`
         - `Chiffre d'affaires HT`
 
         > Une extraction Sage (ventes par article) permet de récupérer ces colonnes ainsi que d'autres,
@@ -67,8 +67,8 @@ with tab1:
 
     if fichier_ventes and fichier_stocks:
         try:
-            ventes = read_table(fichier_ventes)
-            stocks = read_table(fichier_stocks)
+            ventes = f2.lire_avec_header_auto(fichier_ventes, mot_clef="Référence Article")
+            stocks = f2.lire_avec_header_auto(fichier_stocks, mot_clef="Référence Article")
 
             df_final = preparer_donnees(stocks, ventes)
 
