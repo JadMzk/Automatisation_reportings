@@ -107,3 +107,52 @@ def preparer_donnees(stocks, ventes):
     )
 
     return df_final
+
+
+def preparer_donnees2(stocks, mouvements):
+
+    df = pd.merge(stocks, mouvements, on="Référence Article", how="left")
+
+    # Nettoyer colonnes dupliquées post merge
+    cols_y = [c for c in df.columns if c.endswith('_y')]
+    df.drop(columns=cols_y, inplace=True)
+    df.rename(columns=lambda c: c.replace('_x', ''), inplace=True)
+
+    df["Quantité"] = nettoyer_et_convertir(df["Quantité"])
+    df["Qté Stock Réel"] = nettoyer_et_convertir(df["Qté Stock Réel"])
+
+    quant_neg = df[df["Quantité"] < 0].copy()
+    quant_neg["Référence Article"] = quant_neg["Référence Article"].astype(str)
+
+    somme_neg = (
+        quant_neg.groupby("Référence Article")
+        .agg({
+            "Quantité": "sum",
+            "Qté Stock Réel": "first",
+            "Code - Intitulé Famille": "first"
+        })
+        .reset_index()
+    )
+    somme_neg["Qté Sortie"] = -somme_neg["Quantité"]
+
+    somme_neg["Taux de rotation"] = (
+        somme_neg["Qté Sortie"] / somme_neg["Qté Stock Réel"]
+    )
+    somme_neg["Taux de rotation"].replace([np.inf, -np.inf], np.nan, inplace=True)
+
+    return somme_neg
+
+
+def groupby_famille(df_article):
+    df_grouped = df_article.groupby("Code - Intitulé Famille")[
+        ["Taux de rotation", "Qté Stock Réel", "Qté Sortie"]
+    ].mean().reset_index()
+
+    df_grouped.rename(columns={
+        "Code - Intitulé Famille": "Famille",
+        "Taux de rotation": "Taux rotation moyen",
+        "Qté Stock Réel": "Qté Stock Réel moyen",
+        "Qté Sortie": "Qté Sortie moyenne"
+    }, inplace=True)
+
+    return df_grouped

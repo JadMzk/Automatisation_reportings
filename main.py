@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import io
-from fonctions import preparer_donnees
+from fonctions import preparer_donnees, preparer_donnees2, groupby_famille
 import matplotlib.pyplot as plt
 import seaborn as sns
 import fonctions2 as f2
@@ -10,8 +10,11 @@ import fonctions2 as f2
 st.set_page_config(page_title="Automatisation des reporting", layout="wide")
 
 # Onglets Streamlit
-tab1, tab2, tab3 = st.tabs(["📦 Taux de rotation", "📋 Bons de livraison",
-                            "🧾 Suivi de commandes"])
+tab1, tab2, tab3, tab4 = st.tabs([
+    "📊 Taux de rotation avec vente", "📋 Bons de livraison",
+    "🧾 Suivi de commandes", "📦 Taux de rotation avec mouvement"
+])
+
 with tab1:
     # Initialisation de l'application Streamlit
     st.title("📦 Calcul automatique du taux de rotation")
@@ -259,6 +262,93 @@ with tab3:
                 file_name="suivi_commandes_mis_a_jour.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
+
+        except Exception as e:
+            st.error(f"Erreur pendant le traitement : {e}")
+
+
+with tab4:
+    st.header("📊 Taux de rotation avec mouvement")
+
+    st.markdown("""
+    Cette fonctionnalité vous permet de **calculer le taux de rotation**
+    en tenant compte des mouvements de stock.
+
+    - 📄 `Fichier de stock` : contient les données de stock
+    - 📄 `Fichier de mouvement` : contient les données de mouvement
+
+    Les colonnes nécessaires pour le traitement sont :
+    - `Référence Article` : la référence de l'article
+    - `Qté Stock Réel` : la quantité de stock réel
+    - `Qté Mouvement` : la quantité de mouvement
+
+    Assurez-vous que les colonnes sont correctement nommées dans les fichiers Excel.
+    Si les noms de colonnes sont différents, vous pouvez les renommer dans le fichier Excel
+    """)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        fichier_stock = st.file_uploader(
+            "📥 Fichier de stock",
+            type=["xlsx"],
+            key="fichier_stock"
+        )
+    with col2:
+        fichier_mouvement = st.file_uploader(
+            "📥 Fichier de mouvement",
+            type=["xlsx"],
+            key="fichier_mouvement"
+        )
+
+    if fichier_stock and fichier_mouvement:
+        try:
+            mouvements = f2.lire_avec_header_auto(
+                fichier_mouvement,
+                mot_clef="Référence Article"
+            )
+            stocks = f2.lire_avec_header_auto(
+                fichier_stock,
+                mot_clef="Référence Article"
+            )
+
+            df_resultat = preparer_donnees2(stocks, mouvements)
+            st.success("✅ Calcul du taux de rotation effectué avec succès !")
+            st.dataframe(df_resultat)
+
+            df_famille = groupby_famille(df_resultat)
+
+            # Préparer buffer Excel pour taux de rotation par article
+            buffer_articles = io.BytesIO()
+            with pd.ExcelWriter(buffer_articles, engine="xlsxwriter") as writer:
+                df_resultat.to_excel(writer, index=False,
+                                     sheet_name="Taux de rotation par article")
+            buffer_articles.seek(0)
+
+            # Préparer buffer Excel pour taux de rotation par famille
+            buffer_familles = io.BytesIO()
+            with pd.ExcelWriter(buffer_familles, engine="xlsxwriter") as writer:
+                df_famille.to_excel(writer, index=False,
+                                    sheet_name="Taux de rotation par famille")
+            buffer_familles.seek(0)
+
+            col_download_1, col_download_2 = st.columns(2)
+
+            with col_download_1:
+                st.download_button(
+                    label="📥 Télécharger taux de rotation par article",
+                    data=buffer_articles,
+                    file_name="taux_de_rotation_articles.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+
+            with col_download_2:
+                st.download_button(
+                    label="📥 Télécharger taux de rotation par famille",
+                    data=buffer_familles,
+                    file_name="taux_de_rotation_familles.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
 
         except Exception as e:
             st.error(f"Erreur pendant le traitement : {e}")
