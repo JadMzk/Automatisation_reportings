@@ -79,3 +79,13 @@ def traiter_fichiers(ancien_path, nouveau_path):
 
     except Exception as e:
         raise Exception(f"Erreur dans traitement fichiers: {e}")
+
+def nettoyer_num_piece(df):
+    df["N° Pièce"] = (
+        df["N° Pièce"]
+        .astype(str)
+        .str.strip()
+        .str.upper()
+        .str.replace("\xa0", "", regex=False)  # supprime les espaces insécables
+    )
+    return df
