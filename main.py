@@ -184,6 +184,9 @@ with tab2:
             bls_t.columns = bls_t.columns.str.strip()
             bls_tm1.columns = bls_tm1.columns.str.strip()
 
+            bls_t = f2.nettoyer_num_piece(bls_t)
+            bls_tm1 = f2.nettoyer_num_piece(bls_tm1)
+
             bls_tm1_unique = (
                 bls_tm1.groupby("N° Pièce", as_index=False)["REMARQUES_anciennes"]
                 .first()
