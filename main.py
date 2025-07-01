@@ -307,8 +307,10 @@ with tab4:
 
     Les colonnes nécessaires pour le traitement sont :
     - `Référence Article` : la référence de l'article
-    - `Qté Stock Réel` : la quantité de stock réel
+    - `Qté Stock Réel` : la quantité de stock réel (dans le fichier de stock)
     - `Qté Mouvement` : la quantité de mouvement
+    - `Quantité` : la quantité associée à chaque mouvement (dans le fichier de mouvement)
+    - `Code - `Intitulé Famille` : la famille de l'article (optionnel mais recommandé)
 
     Assurez-vous que les colonnes sont correctement nommées dans les fichiers Excel.
     Si les noms de colonnes sont différents, vous pouvez les renommer dans le fichier Excel
