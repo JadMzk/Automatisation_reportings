@@ -184,10 +184,15 @@ with tab2:
             bls_t.columns = bls_t.columns.str.strip()
             bls_tm1.columns = bls_tm1.columns.str.strip()
 
+            bls_tm1_unique = (
+                bls_tm1.groupby("Référence", as_index=False)["REMARQUES_anciennes"]
+                .first()
+            )
+
             # Fusion
             df_bls = pd.merge(
                 bls_t,
-                bls_tm1[["Référence", "REMARQUES_anciennes"]],
+                bls_tm1_unique[["Référence", "REMARQUES_anciennes"]],
                 on="Référence"
             )
 
