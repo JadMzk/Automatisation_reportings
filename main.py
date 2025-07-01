@@ -193,14 +193,14 @@ with tab2:
             df_bls = pd.merge(
                 bls_t,
                 bls_tm1_unique[["Référence", "REMARQUES_anciennes"]],
-                on="Référence"
+                on="Référence", how="left"
             )
 
             # Fusion avec doublons (version brute)
             df_bls2 = pd.merge(
                 bls_t,
                 bls_tm1[["Référence", "REMARQUES_anciennes"]],
-                on="Référence"
+                on="Référence", how="left"
             )
 
             st.success("✅ Fusion réussie ! Aperçu ci-dessous :")
