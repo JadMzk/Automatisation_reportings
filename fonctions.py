@@ -125,14 +125,16 @@ def preparer_donnees2(stocks, mouvements):
     quant_neg["Référence Article"] = quant_neg["Référence Article"].astype(str)
 
     somme_neg = (
-        quant_neg.groupby("Référence Article")
-        .agg({
-            "Quantité": "sum",
-            "Qté Stock Réel": "first",
-            "Code - Intitulé Famille": "first"
-        })
-        .reset_index()
-    )
+    quant_neg.groupby("Référence Article")
+    .agg({
+        "Quantité": "sum",
+        "Qté Stock Réel": "first",
+        "Code - Intitulé Famille": "first",
+        "Désignation Article": "first"
+    })
+    .reset_index()
+)
+
     somme_neg["Qté Sortie"] = -somme_neg["Quantité"]
 
     somme_neg["Taux de rotation"] = (
