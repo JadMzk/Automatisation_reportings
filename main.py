@@ -184,6 +184,10 @@ with tab2:
             bls_t.columns = bls_t.columns.str.strip()
             bls_tm1.columns = bls_tm1.columns.str.strip()
 
+            bls_t["Référence"] = bls_t["Référence"].astype(str).str.strip().str.upper().str.replace("\xa0", "", regex=False)
+            bls_tm1["Référence"] = bls_tm1["Référence"].astype(str).str.strip().str.upper().str.replace("\xa0", "", regex=False)
+
+
             bls_tm1_unique = (
                 bls_tm1.groupby("Référence", as_index=False)["REMARQUES_anciennes"]
                 .first()
