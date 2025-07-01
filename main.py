@@ -184,27 +184,23 @@ with tab2:
             bls_t.columns = bls_t.columns.str.strip()
             bls_tm1.columns = bls_tm1.columns.str.strip()
 
-            bls_t["Référence"] = bls_t["Référence"].astype(str).str.strip().str.upper().str.replace("\xa0", "", regex=False)
-            bls_tm1["Référence"] = bls_tm1["Référence"].astype(str).str.strip().str.upper().str.replace("\xa0", "", regex=False)
-
-
             bls_tm1_unique = (
-                bls_tm1.groupby("Référence", as_index=False)["REMARQUES_anciennes"]
+                bls_tm1.groupby("N° Pièce", as_index=False)["REMARQUES_anciennes"]
                 .first()
             )
 
             # Fusion sans doublons
             df_bls = pd.merge(
                 bls_t,
-                bls_tm1_unique[["Référence", "REMARQUES_anciennes"]],
-                on="Référence", how="left"
+                bls_tm1_unique[["N° Pièce", "REMARQUES_anciennes"]],
+                on="N° Pièce", how="left"
             )
 
             # Fusion avec doublons (version brute)
             df_bls2 = pd.merge(
                 bls_t,
-                bls_tm1[["Référence", "REMARQUES_anciennes"]],
-                on="Référence", how="left"
+                bls_tm1[["N° Pièce", "REMARQUES_anciennes"]],
+                on="N° Pièce", how="left"
             )
 
             st.success("✅ Fusion réussie ! Aperçu ci-dessous :")
