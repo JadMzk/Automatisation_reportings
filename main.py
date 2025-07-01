@@ -189,29 +189,52 @@ with tab2:
                 .first()
             )
 
-            # Fusion
+            # Fusion sans doublons
             df_bls = pd.merge(
                 bls_t,
                 bls_tm1_unique[["Référence", "REMARQUES_anciennes"]],
                 on="Référence"
             )
 
+            # Fusion avec doublons (version brute)
+            df_bls2 = pd.merge(
+                bls_t,
+                bls_tm1[["Référence", "REMARQUES_anciennes"]],
+                on="Référence"
+            )
+
             st.success("✅ Fusion réussie ! Aperçu ci-dessous :")
             st.dataframe(df_bls)
 
-            # Export Excel
-            buffer = io.BytesIO()
-            with pd.ExcelWriter(buffer, engine="xlsxwriter") as writer:
+            # Préparer les deux buffers
+            buffer_sans_doublon = io.BytesIO()
+            with pd.ExcelWriter(buffer_sans_doublon, engine="xlsxwriter") as writer:
                 df_bls.to_excel(writer, index=False, sheet_name="Fusion BL")
-            buffer.seek(0)
+            buffer_sans_doublon.seek(0)
 
-            st.download_button(
-                label="📥 Télécharger la fusion Excel",
-                data=buffer,
-                file_name="fusion_bons_livraison.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            )
+            buffer_avec_doublon = io.BytesIO()
+            with pd.ExcelWriter(buffer_avec_doublon, engine="xlsxwriter") as writer:
+                df_bls2.to_excel(writer, index=False, sheet_name="Fusion BL (doublons)")
+            buffer_avec_doublon.seek(0)
 
+            # Deux colonnes pour deux boutons
+            col_g, col_d = st.columns(2)
+
+            with col_g:
+                st.download_button(
+                    label="📥 Télécharger la fusion SANS doublons",
+                    data=buffer_sans_doublon,
+                    file_name="fusion_bons_livraison_sans_doublon.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+
+            with col_d:
+                st.download_button(
+                    label="📥 Télécharger la fusion AVEC doublons",
+                    data=buffer_avec_doublon,
+                    file_name="fusion_bons_livraison_avec_doublon.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
         except Exception as e:
             st.error(f"Erreur pendant la fusion : {e}")
 
