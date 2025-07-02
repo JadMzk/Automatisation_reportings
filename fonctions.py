@@ -116,10 +116,13 @@ def preparer_donnees2(stocks, mouvements):
 
     somme_neg = (
         quant_neg.groupby("Référence Article")
-        .agg({"Quantité": "sum"})
+        .agg({
+            "Quantité": "sum",
+            "Désignation Article": "first"
+        })
         .rename(columns={"Quantité": "Qté Sortie"})
         .reset_index()
-    )
+        )
 
     # Qté Sortie positive
     somme_neg["Qté Sortie"] = somme_neg["Qté Sortie"].abs()
