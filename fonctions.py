@@ -110,39 +110,35 @@ def preparer_donnees(stocks, ventes):
 
 
 def preparer_donnees2(stocks, mouvements):
-
-    df = pd.merge(stocks, mouvements, on="Référence Article", how="left")
-
-    # Nettoyer colonnes dupliquées post merge
-    cols_y = [c for c in df.columns if c.endswith('_y')]
-    df.drop(columns=cols_y, inplace=True)
-    df.rename(columns=lambda c: c.replace('_x', ''), inplace=True)
-
-    df["Quantité"] = nettoyer_et_convertir(df["Quantité"])
-    df["Qté Stock Réel"] = nettoyer_et_convertir(df["Qté Stock Réel"])
-
-    quant_neg = df[df["Quantité"] < 0].copy()
+    # Calculer Qté Sortie négative par article
+    quant_neg = mouvements[mouvements["Quantité"] < 0].copy()
     quant_neg["Référence Article"] = quant_neg["Référence Article"].astype(str)
 
     somme_neg = (
-    quant_neg.groupby("Référence Article")
-    .agg({
-        "Quantité": "sum",
-        "Qté Stock Réel": "first",
-        "Code - Intitulé Famille": "first",
-        "Désignation Article": "first"
-    })
-    .reset_index()
-)
-
-    somme_neg["Qté Sortie"] = -somme_neg["Quantité"]
-
-    somme_neg["Taux de rotation"] = (
-        somme_neg["Qté Sortie"] / somme_neg["Qté Stock Réel"]
+        quant_neg.groupby("Référence Article")
+        .agg({"Quantité": "sum"})
+        .rename(columns={"Quantité": "Qté Sortie"})
+        .reset_index()
     )
-    somme_neg["Taux de rotation"].replace([np.inf, -np.inf], np.nan, inplace=True)
 
-    return somme_neg
+    # Qté Sortie positive
+    somme_neg["Qté Sortie"] = somme_neg["Qté Sortie"].abs()
+
+    # Fusionner directement avec stocks
+    df = pd.merge(stocks, somme_neg, on="Référence Article", how="left")
+
+    # Nettoyer / convertir colonnes si besoin
+    df["Qté Stock Réel"] = nettoyer_et_convertir(df["Qté Stock Réel"])
+
+    # Remplacer NaN par 0 pour les articles sans sortie enregistrée
+    df["Qté Sortie"] = df["Qté Sortie"].fillna(0)
+
+    df["Taux de rotation"] = (
+        df["Qté Sortie"] / df["Qté Stock Réel"]
+    )
+    df["Taux de rotation"].replace([np.inf, -np.inf], np.nan, inplace=True)
+
+    return df
 
 
 def groupby_famille(df_article):
