@@ -125,10 +125,7 @@ def preparer_donnees2(stocks, mouvements):
     somme_neg["Qté Sortie"] = somme_neg["Qté Sortie"].abs()
 
     # Fusionner directement avec stocks
-    df = pd.merge(stocks, somme_neg, on="Référence Article", how="left")
-
-    # Nettoyer / convertir colonnes si besoin
-    df["Qté Stock Réel"] = nettoyer_et_convertir(df["Qté Stock Réel"])
+    df = pd.merge(stocks, somme_neg, on="Référence Article", how="outer")
 
     # Remplacer NaN par 0 pour les articles sans sortie enregistrée
     df["Qté Sortie"] = df["Qté Sortie"].fillna(0)
