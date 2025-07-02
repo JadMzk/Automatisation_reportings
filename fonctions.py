@@ -118,7 +118,8 @@ def preparer_donnees2(stocks, mouvements):
         quant_neg.groupby("Référence Article")
         .agg({
             "Quantité": "sum",
-            "Désignation Article": "first"
+            "Désignation Article": "first",
+            "Code - Intitulé Famille": "first"
         })
         .rename(columns={"Quantité": "Qté Sortie"})
         .reset_index()
@@ -129,6 +130,18 @@ def preparer_donnees2(stocks, mouvements):
 
     # Fusionner directement avec stocks
     df = pd.merge(stocks, somme_neg, on="Référence Article", how="outer")
+
+    # Pour la colonne Désignation Article
+    df["Désignation Article"] = df["Désignation Article_x"].fillna(df["Désignation Article_y"])
+
+    # Pour la colonne Code - Intitulé Famille
+    df["Code - Intitulé Famille"] = df["Code - Intitulé Famille_x"].fillna(df["Code - Intitulé Famille_y"])
+
+    # Ensuite tu peux supprimer les colonnes originales
+    df.drop(columns=[
+        "Désignation Article_x", "Désignation Article_y",
+        "Code - Intitulé Famille_x", "Code - Intitulé Famille_y"
+    ], inplace=True)
 
     # Remplacer NaN par 0 pour les articles sans sortie enregistrée
     df["Qté Sortie"] = df["Qté Sortie"].fillna(0)
