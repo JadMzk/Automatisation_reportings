@@ -198,6 +198,11 @@ with tab2:
                 bls_tm1_unique[["N° Pièce", "REMARQUES_anciennes"]],
                 on="N° Pièce", how="left"
             )
+            # Extraire la colonne REMARQUES_nouvelles
+            remarques_nouvelles = df_bls.pop("REMARQUES_nouvelles")
+
+            # La remettre en dernière position
+            df_bls["REMARQUES_nouvelles"] = remarques_nouvelles
 
             # Fusion avec doublons (version brute)
             df_bls2 = pd.merge(
