@@ -1,0 +1,269 @@
+[33mcommit 7246d633c24df0833c234dd65d4bb90db89bf049[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Thu Jul 3 08:51:13 2025 +0100
+
+    Retour au left merge
+
+[33mcommit 11b103ffe4b1e4234b62cbac7358053948e15f81[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Wed Jul 2 13:26:48 2025 +0100
+
+    gestion des NA
+
+[33mcommit b53a85f25c92ff0898edfec4e6b14d323c644c02[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Wed Jul 2 13:20:24 2025 +0100
+
+    Ajout Désignation Article dans
+    la fusion des données sur prepareedonnees2
+
+[33mcommit c4ed90e1e685875ea28f4b357e6cfe052dfebce6[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Wed Jul 2 13:15:45 2025 +0100
+
+    Modification de preparerdonnees2
+
+[33mcommit 94e228cd0d9dbe51d66bb97e6ff8edc443125c52[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Wed Jul 2 12:57:12 2025 +0100
+
+    changement de preparerdonnees2
+
+[33mcommit c5627c602f649ae82b7e215d7d2308693151d767[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jul 1 16:10:05 2025 +0100
+
+    ajout nettoyage num pièce
+
+[33mcommit 6c68b575970c25ad36f2c69c1249ed9627ca0530[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jul 1 16:09:21 2025 +0100
+
+    Ajout du nettoyage des numéros de pièce pour
+    éviter les problèmes de correspondance.
+
+[33mcommit 63dafb6e7b15e5ea20f91266abbf22e87db1efff[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jul 1 15:50:22 2025 +0100
+
+    Ajout N° Pièce pour la fusion des données au lieu
+    de Référence qui est non unique
+
+[33mcommit 29396663818b8586864eb2a2e57509bdf030e8df[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jul 1 15:40:08 2025 +0100
+
+    Ajout du nettoyage de référence
+
+[33mcommit 81a3d9afabb32bffe0b10493d17771906e807989[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jul 1 12:14:13 2025 +0100
+
+    d
+
+[33mcommit ddf4b3c6cf8618a713f6a9c29cabf10d6e0b9489[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jul 1 12:12:55 2025 +0100
+
+    ..
+
+[33mcommit 5291c44adc5b3c0f00273cc02b85f2a58f8720d8[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jul 1 11:38:58 2025 +0100
+
+    left merge pour bls
+
+[33mcommit 702f0bd3f066e4e94ce0d5f905dce76ed86e2519[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jul 1 10:37:20 2025 +0100
+
+    Ajout de la fonctionnalité de télécharger
+    bls avec doublons
+
+[33mcommit a35de31c479df917a7c1bdcac3f24e314a979cd9[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jul 1 10:23:53 2025 +0100
+
+    correction bug doublons
+
+[33mcommit bb86a83612f39e61b9b1fdbbcf3ac28feb221943[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jul 1 09:23:34 2025 +0100
+
+    Ajout Désignation Article
+
+[33mcommit 0fd5fe523a80a3d1bdf6cd37cb8bc444fd12fa2f[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 30 18:02:33 2025 +0100
+
+    Ajout d'une nouvelle fonctionnalité pour calcul
+    du taux de rotation avec mouvement
+
+[33mcommit 51d8b3530808d96bf478425735de52db6fb0bbf4[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 30 08:47:05 2025 +0100
+
+    ajout d'un script de ping
+
+[33mcommit aefd13b2aec87415765fbba2b68930979101a6b9[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Thu Jun 26 15:17:03 2025 +0100
+
+    Changement dans les instructions
+
+[33mcommit 3a4aa10a15539b85df5bed81e745d6a0549231e1[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Wed Jun 25 15:38:39 2025 +0100
+
+    Ajout description
+
+[33mcommit d12c6cca098675fedac1c27c7189e18061760a43[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Wed Jun 25 08:53:32 2025 +0100
+
+    Ajout de description
+
+[33mcommit 17aab217d71d4887d44877d3230f49339cbd8a86[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Wed Jun 25 08:49:14 2025 +0100
+
+    Changement description
+
+[33mcommit 8187d8dc818c422c35ce9dd62256814e54b1b7ae[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Wed Jun 25 08:27:46 2025 +0100
+
+    Suppression d'un espace inutile dans le fichier
+    main.py
+
+[33mcommit e82d893053833eeeeed53eb70296ee9b5862dc41[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Wed Jun 25 08:26:05 2025 +0100
+
+    MAJ de la deuxième application
+
+[33mcommit 08f586659f9ed0b3d214f676a5d22ac4ccc54a29[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jun 24 16:57:34 2025 +0100
+
+    .
+
+[33mcommit f772897b005c828f2fc01b4f8173b49f941d4bf6[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jun 24 16:52:41 2025 +0100
+
+    Changement de description
+
+[33mcommit 6fe700911d987431995fe06e18a4d1aaa0473716[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jun 24 11:12:34 2025 +0100
+
+    .
+
+[33mcommit 02fb1978c9703ec710033fab0f1f8ce331e1b734[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jun 24 11:11:15 2025 +0100
+
+    Ajout d'instructions
+
+[33mcommit 367368eac02d85383b3e056c7dfd04febfaa8978[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jun 24 10:44:47 2025 +0100
+
+    Réglages des textes
+
+[33mcommit b5c88a0bb1e2cd3fd018cbb4ca5873f6e77b71a7[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jun 24 10:39:17 2025 +0100
+
+    Suppression de pywin32 dans le requirements.txt
+
+[33mcommit 82e3fb6451d46d5d9ab4c54110107b069dafd2f7[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jun 24 10:37:15 2025 +0100
+
+    Nouvelle implementation de l'appli 3 sur
+    bons de commandes
+
+[33mcommit 95b36a60818689f749ff0697c98963f786559ad6[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jun 24 08:47:47 2025 +0100
+
+    Ajout de pywin32 dans requirements
+
+[33mcommit 153952d9b42c3119e1c4fc7dd56a79af303352b4[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Tue Jun 24 08:44:33 2025 +0100
+
+    Première version traitement bons de commandes
+
+[33mcommit b07049a9344de96fe107a3c694f2ff6f3a119eb7[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 16:25:49 2025 +0100
+
+    a
+
+[33mcommit 5490a3fb2e7ba63f5375bf152cfdf954ce714aad[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 16:22:51 2025 +0100
+
+    Mis à jour du texte tab2
+
+[33mcommit b12d515f68f371cd5bb9b51a216670511896d002[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 15:49:21 2025 +0100
+
+    correction bug 2
+
+[33mcommit 686dec7e24fad5a3e92ad72cfd234038a608225c[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 15:43:40 2025 +0100
+
+    Correction message d'erreur
+
+[33mcommit dfc8df0cbeb4dc5869de8fc932d4e21803b4dcb2[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 15:39:59 2025 +0100
+
+    Ajout des graphs à taux de rotation
+
+[33mcommit 4b6e6a342c00906f5de9e6fb20b41977fb8fdc07[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 15:21:57 2025 +0100
+
+    Modif boutons
+
+[33mcommit ba5e1e245d197a85c6fb888f3bbd061b1eb01b07[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 15:16:52 2025 +0100
+
+    Changement description fichiers
+
+[33mcommit f1e9d19967a3ce2cd06210d95ec657c42000e8c8[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 15:09:41 2025 +0100
+
+    Ajout du traitement des bons de livraison
+
+[33mcommit c6253c3607aa19c0d5f3d592eb71df9bd5ce5f5e[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 11:31:22 2025 +0100
+
+    Changement nom de colonne
+
+[33mcommit 839a46ee1991dc76723fc8a4fa20493cf98a59ce[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 10:55:42 2025 +0100
+
+    Suppression de Code-Famille
+
+[33mcommit 5eb8946c2ad5e2c760e01b75243fa3b1d0127d0e[m
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 10:50:01 2025 +0100
+
+    Ajustement sur preparer_donnees
+
+[33mcommit 9e584a9b8315b81c4b205013b59bc78ece152f8b[m
+Merge: 72d2b3c 7d8bb82
+Author: Jad Merzouki <jad.merzouki@eleve.ensai.fr>
+Date:   Mon Jun 23 10:39:59 2025 

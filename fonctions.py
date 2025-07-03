@@ -112,7 +112,10 @@ def preparer_donnees(stocks, ventes):
 def preparer_donnees2(stocks, mouvements):
     # Calculer Qté Sortie négative par article
     quant_neg = mouvements[mouvements["Quantité"] < 0].copy()
-    quant_neg["Référence Article"] = quant_neg["Référence Article"].astype(str)
+    quant_neg["Référence Article"] = (
+        quant_neg["Référence Article"].astype(str).str.strip()
+    )
+    stocks["Référence Article"] = stocks["Référence Article"].astype(str).str.strip()
 
     somme_neg = (
         quant_neg.groupby("Référence Article")
@@ -132,10 +135,14 @@ def preparer_donnees2(stocks, mouvements):
     df = pd.merge(stocks, somme_neg, on="Référence Article", how="outer")
 
     # Pour la colonne Désignation Article
-    df["Désignation Article"] = df["Désignation Article_x"].fillna(df["Désignation Article_y"])
+    df["Désignation Article"] = df["Désignation Article_x"].fillna(
+        df["Désignation Article_y"]
+    )
 
     # Pour la colonne Code - Intitulé Famille
-    df["Code - Intitulé Famille"] = df["Code - Intitulé Famille_x"].fillna(df["Code - Intitulé Famille_y"])
+    df["Code - Intitulé Famille"] = (
+        df["Code - Intitulé Famille_x"].fillna(df["Code - Intitulé Famille_y"])
+    )
 
     # Ensuite tu peux supprimer les colonnes originales
     df.drop(columns=[
@@ -155,9 +162,13 @@ def preparer_donnees2(stocks, mouvements):
 
 
 def groupby_famille(df_article):
-    df_grouped = df_article.groupby("Code - Intitulé Famille")[
-        ["Taux de rotation", "Qté Stock Réel", "Qté Sortie"]
-    ].mean().reset_index()
+    df_grouped = (
+        df_article.groupby("Code - Intitulé Famille")[
+            ["Taux de rotation", "Qté Stock Réel", "Qté Sortie"]
+        ]
+        .mean()
+        .reset_index()
+    )
 
     df_grouped.rename(columns={
         "Code - Intitulé Famille": "Famille",
