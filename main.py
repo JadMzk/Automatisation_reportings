@@ -211,6 +211,8 @@ with tab2:
                 on="N° Pièce", how="left"
             )
 
+            df_bls.drop(columns = ["Prix Revient Total"], inplace=True, errors='ignore')
+
             st.success("✅ Fusion réussie ! Aperçu ci-dessous :")
             st.dataframe(df_bls)
 
