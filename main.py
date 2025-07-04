@@ -196,7 +196,7 @@ with tab2:
             # Fusion sans doublons
             df_bls = pd.merge(
                 bls_t,
-                bls_tm1_unique[["N° Pièce", "REMARQUES_anciennes", "Remarques_av_ancienne"]],
+                bls_tm1_unique[["N° Pièce","Remarques_av_ancienne", "REMARQUES_anciennes"]],
                 on="N° Pièce", how="left"
             )
             # Extraire la colonne REMARQUES_nouvelles
