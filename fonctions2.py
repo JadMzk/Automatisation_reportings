@@ -81,6 +81,7 @@ def traiter_fichiers(ancien_path, nouveau_path):
         raise Exception(f"Erreur dans traitement fichiers: {e}")
 
 def nettoyer_num_piece(df):
+    """    Nettoie la colonne "N° Pièce" d'un DataFrame."""
     df["N° Pièce"] = (
         df["N° Pièce"]
         .astype(str)

@@ -179,8 +179,15 @@ with tab2:
 
             # Nettoyage
             bls_t.columns.values[-1] = "REMARQUES_nouvelles"
-            bls_tm1.columns.values[-1] = "REMARQUES_anciennes"
-            bls_tm1.rename(columns={bls_tm1.columns[-2]: "Remarques_av_ancienne"}, inplace=True)
+            # Sauvegarde des deux noms AVANT de modifier quoi que ce soit
+            col_avant_derniere = bls_tm1.columns[-2]
+            col_derniere = bls_tm1.columns[-1]
+
+            # Puis renomme explicitement
+            bls_tm1.rename(columns={
+                col_avant_derniere: "Remarques_av_ancienne",
+                col_derniere: "REMARQUES_anciennes"
+            }, inplace=True)
 
             bls_t.columns = bls_t.columns.str.strip()
             bls_tm1.columns = bls_tm1.columns.str.strip()
