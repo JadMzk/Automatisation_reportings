@@ -143,8 +143,8 @@ with tab2:
 
     st.markdown("""
     Téléversez deux fichiers Excel contenant les bons de livraison, dans l’ordre :
-    - 📄 `Fichier des bons de livraison avec nouvelles remarques`
-    - 📄 `Fichier des bons de livraison avec anciennes remarques`
+    - 📄 `Fichier des nouveaux bons de livraison`
+    - 📄 `Fichier des anciens bons de livraison avec remarques`
 
     ⚠️ Assurez-vous que les deux fichiers n'ont pas de ligne vide en haut, ou de lignes
     qui ne contiennent qu'un titre et que les colonnes sont correctement nommées.
@@ -153,9 +153,8 @@ with tab2:
                 `Feuil2` dans les deux fichiers.
 
     Les colonnes doivent contenir au moins :
-    - `Référence` : la référence du bon de livraison
-    - `REMARQUES` : les remarques des bons de livraison
-    - `N° Compte Client` : le numéro de compte client (pour la fusion)
+    - `REMARQUES` : les remarques des bons de livraison (SEULEMENT dans le fichier des anciens bons de livraison)
+    - `N° Pièce` : le numéro du BL (pour la fusion)
 
     Les colonnes nommés ainsi sont nécessaires pour que la fusion fonctionne correctement.
     Si les noms de colonnes sont différents, vous pouvez les renommer dans le fichier Excel
