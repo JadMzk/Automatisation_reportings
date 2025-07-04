@@ -188,15 +188,10 @@ with tab2:
             bls_t = f2.nettoyer_num_piece(bls_t)
             bls_tm1 = f2.nettoyer_num_piece(bls_tm1)
 
-            bls_tm1_unique = (
-                bls_tm1.groupby("N° Pièce", as_index=False)["REMARQUES_anciennes"]
-                .first()
-            )
-
             # Fusion sans doublons
             df_bls = pd.merge(
                 bls_t,
-                bls_tm1_unique[["N° Pièce","Remarques_av_ancienne", "REMARQUES_anciennes"]],
+                bls_tm1[["N° Pièce","Remarques_av_ancienne", "REMARQUES_anciennes"]],
                 on="N° Pièce", how="left"
             )
             # Extraire la colonne REMARQUES_nouvelles
