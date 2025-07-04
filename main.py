@@ -180,6 +180,7 @@ with tab2:
             # Nettoyage
             bls_t.columns.values[-1] = "REMARQUES_nouvelles"
             bls_tm1.columns.values[-1] = "REMARQUES_anciennes"
+            bls_tm1.rename(columns={bls_tm1.columns[-2]: "Remarques_av_ancienne"}, inplace=True)
 
             bls_t.columns = bls_t.columns.str.strip()
             bls_tm1.columns = bls_tm1.columns.str.strip()
@@ -195,7 +196,7 @@ with tab2:
             # Fusion sans doublons
             df_bls = pd.merge(
                 bls_t,
-                bls_tm1_unique[["N° Pièce", "REMARQUES_anciennes"]],
+                bls_tm1_unique[["N° Pièce", "REMARQUES_anciennes", "Remarques_av_ancienne"]],
                 on="N° Pièce", how="left"
             )
             # Extraire la colonne REMARQUES_nouvelles
@@ -204,12 +205,6 @@ with tab2:
             # La remettre en dernière position
             df_bls["REMARQUES_nouvelles"] = remarques_nouvelles
 
-            # Fusion avec doublons (version brute)
-            df_bls2 = pd.merge(
-                bls_t,
-                bls_tm1[["N° Pièce", "REMARQUES_anciennes"]],
-                on="N° Pièce", how="left"
-            )
 
             df_bls.drop(columns = ["Prix Revient Total"], inplace=True, errors='ignore')
 
@@ -219,32 +214,18 @@ with tab2:
             # Préparer les deux buffers
             buffer_sans_doublon = io.BytesIO()
             with pd.ExcelWriter(buffer_sans_doublon, engine="xlsxwriter") as writer:
-                df_bls.to_excel(writer, index=False, sheet_name="Fusion BL")
+                df_bls.to_excel(writer, index=False, sheet_name="Feuil2")
             buffer_sans_doublon.seek(0)
 
-            buffer_avec_doublon = io.BytesIO()
-            with pd.ExcelWriter(buffer_avec_doublon, engine="xlsxwriter") as writer:
-                df_bls2.to_excel(writer, index=False, sheet_name="Fusion BL (doublons)")
-            buffer_avec_doublon.seek(0)
 
-            # Deux colonnes pour deux boutons
-            col_g, col_d = st.columns(2)
+            # Bouton de téléchargement
+            st.download_button(
+                label="📥 Télécharger la fusion",
+                data=buffer_sans_doublon,
+                file_name="fusion_bons_livraison.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
 
-            with col_g:
-                st.download_button(
-                    label="📥 Télécharger la fusion SANS doublons",
-                    data=buffer_sans_doublon,
-                    file_name="fusion_bons_livraison_sans_doublon.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
-
-            with col_d:
-                st.download_button(
-                    label="📥 Télécharger la fusion AVEC doublons",
-                    data=buffer_avec_doublon,
-                    file_name="fusion_bons_livraison_avec_doublon.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
         except Exception as e:
             st.error(f"Erreur pendant la fusion : {e}")
 
