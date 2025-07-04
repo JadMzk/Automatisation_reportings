@@ -177,22 +177,9 @@ with tab2:
             bls_tm1 = f2.lire_avec_header_auto(fichier_bls_tm1, sheet_name="Feuil2",
                                                mot_clef="N° Compte Client")
 
-            # Nettoyage
-            bls_t.columns.values[-1] = "REMARQUES_nouvelles"
+            bls_tm1.columns.values[-1] = "REMARQUES"
 
-            # Supprimer la colonne "Remarques_av_ancienne" si elle existe déjà
-            if "Remarques_av_ancienne" in bls_tm1.columns:
-                bls_tm1.drop(columns=["Remarques_av_ancienne"], inplace=True)
-            # Sauvegarde des deux noms AVANT de modifier quoi que ce soit
-            col_avant_derniere = bls_tm1.columns[-2]
-            col_derniere = bls_tm1.columns[-1]
-
-            # Puis renomme explicitement
-            bls_tm1.rename(columns={
-                col_avant_derniere: "Remarques_av_ancienne",
-                col_derniere: "REMARQUES_anciennes"
-            }, inplace=True)
-
+            # nettoyer le nom des colonnes et les numéros de pièces
             bls_t.columns = bls_t.columns.str.strip()
             bls_tm1.columns = bls_tm1.columns.str.strip()
 
@@ -202,14 +189,9 @@ with tab2:
             # Fusion sans doublons
             df_bls = pd.merge(
                 bls_t,
-                bls_tm1[["N° Pièce", "Remarques_av_ancienne", "REMARQUES_anciennes"]],
+                bls_tm1[["N° Pièce", "REMARQUES"]],
                 on="N° Pièce", how="left"
             )
-            # Extraire la colonne REMARQUES_nouvelles
-            remarques_nouvelles = df_bls.pop("REMARQUES_nouvelles")
-
-            # La remettre en dernière position
-            df_bls["REMARQUES_nouvelles"] = remarques_nouvelles
 
             df_bls.drop(columns=["Prix Revient Total"], inplace=True, errors='ignore')
 
