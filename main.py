@@ -179,6 +179,10 @@ with tab2:
 
             # Nettoyage
             bls_t.columns.values[-1] = "REMARQUES_nouvelles"
+
+            # Supprimer la colonne "Remarques_av_ancienne" si elle existe déjà
+            if "Remarques_av_ancienne" in bls_tm1.columns:
+                bls_tm1.drop(columns=["Remarques_av_ancienne"], inplace=True)
             # Sauvegarde des deux noms AVANT de modifier quoi que ce soit
             col_avant_derniere = bls_tm1.columns[-2]
             col_derniere = bls_tm1.columns[-1]
@@ -198,7 +202,7 @@ with tab2:
             # Fusion sans doublons
             df_bls = pd.merge(
                 bls_t,
-                bls_tm1[["N° Pièce","Remarques_av_ancienne", "REMARQUES_anciennes"]],
+                bls_tm1[["N° Pièce", "Remarques_av_ancienne", "REMARQUES_anciennes"]],
                 on="N° Pièce", how="left"
             )
             # Extraire la colonne REMARQUES_nouvelles
@@ -207,8 +211,7 @@ with tab2:
             # La remettre en dernière position
             df_bls["REMARQUES_nouvelles"] = remarques_nouvelles
 
-
-            df_bls.drop(columns = ["Prix Revient Total"], inplace=True, errors='ignore')
+            df_bls.drop(columns=["Prix Revient Total"], inplace=True, errors='ignore')
 
             st.success("✅ Fusion réussie ! Aperçu ci-dessous :")
             st.dataframe(df_bls)
@@ -218,7 +221,6 @@ with tab2:
             with pd.ExcelWriter(buffer_sans_doublon, engine="xlsxwriter") as writer:
                 df_bls.to_excel(writer, index=False, sheet_name="Feuil2")
             buffer_sans_doublon.seek(0)
-
 
             # Bouton de téléchargement
             st.download_button(
