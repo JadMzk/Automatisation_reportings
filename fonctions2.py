@@ -34,51 +34,47 @@ def nettoyer_chaine(s):
 
 
 def traiter_fichiers(ancien_path, nouveau_path):
-    """    Traite deux fichiers Excel pour fusionner les remarques
-    des bons de livraison anciens et nouveaux."""
+    """
+    Transfère les remarques de l'ancien fichier vers le nouveau,
+    en utilisant une clé basée sur Référence + Désignation.
+    """
     try:
         df_ancien = lire_avec_header_auto(ancien_path)
         df_nouveau = lire_avec_header_auto(nouveau_path)
 
+        # Nettoyage des noms de colonnes
         df_ancien.columns = df_ancien.columns.str.strip()
         df_nouveau.columns = df_nouveau.columns.str.strip()
 
+        # Vérifie que 'Remarques' est bien dans l'ancien fichier
         if "Remarques" not in df_ancien.columns:
-            raise ValueError(
-                "La colonne 'Remarques' est absente du fichier ancien"
-            )
-        if "Remarques" not in df_nouveau.columns:
-            raise ValueError(
-                "La colonne 'Remarques' est absente du fichier nouveau"
-            )
+            raise ValueError("La colonne 'Remarques' est absente du fichier ancien")
 
-        # Création de la clé pour la jointure dans les deux df avec nettoyage
-        # Double clé : Référence + Désignation qui est unique
-        # (ne correspond qu'à une seule ligne)
+        # Création des clés de jointure
         df_ancien['key'] = df_ancien.apply(
-            lambda row: nettoyer_chaine(row['Référence']) + "__" +
-                        nettoyer_chaine(row['Désignation']),
+            lambda row: nettoyer_chaine(str(row['Référence'])) + "__" +
+                        nettoyer_chaine(str(row['Désignation'])),
             axis=1
         )
         df_nouveau['key'] = df_nouveau.apply(
-            lambda row: nettoyer_chaine(row['Référence']) + "__" +
-                        nettoyer_chaine(row['Désignation']),
+            lambda row: nettoyer_chaine(str(row['Référence'])) + "__" +
+                        nettoyer_chaine(str(row['Désignation'])),
             axis=1
         )
 
-        # Mapping clé -> remarques ancien
-        remarques_map = df_ancien.set_index('key')['Remarques'].to_dict()
+        # Dictionnaire : clé -> remarque
+        remarques_map = df_ancien.set_index('key')["Remarques"].to_dict()
 
-        # Ajout colonne 'Remarques_ancien' dans df_nouveau
-        df_nouveau['Remarques_ancien'] = df_nouveau['key'].map(remarques_map)
+        # Ajout des remarques dans le fichier nouveau
+        df_nouveau["Remarques_ancien"] = df_nouveau["key"].map(remarques_map)
 
-        # Suppression clé temporaire
-        df_nouveau.drop(columns=['key'], inplace=True)
+        # Suppression de la clé temporaire
+        df_nouveau.drop(columns=["key"], inplace=True)
 
         return df_nouveau
 
     except Exception as e:
-        raise Exception(f"Erreur dans traitement fichiers: {e}")
+        raise Exception(f"Erreur dans traitement fichiers : {e}")
 
 def nettoyer_num_piece(df):
     """    Nettoie la colonne "N° Pièce" d'un DataFrame."""
