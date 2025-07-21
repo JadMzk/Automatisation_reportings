@@ -143,6 +143,7 @@ with tab2:
 
     st.markdown("""
     📺 [Voir le tutoriel vidéo sur YouTube](https://www.youtube.com/watch?v=TOaxGcwENrY)
+
     Téléversez deux fichiers Excel contenant les bons de livraison, dans l’ordre :
     - 📄 `Fichier des nouveaux bons de livraison`
     - 📄 `Fichier des anciens bons de livraison avec remarques`
@@ -221,7 +222,10 @@ with tab3:
 
     st.markdown("""
     Cette fonctionnalité vous permet de **mettre à jour automatiquement les remarques**
-    d’un fichier de commandes en comparant avec un fichier précédent.
+    d’un fichier de suivi commandes en comparant avec un fichier précédent.
+    Elle fonctionne de la même manière que la fusion des bons de livraison et s'utilise
+    donc de la même manière (simplement avec des fichiers différents et des colonnes
+    différentes).
 
     - 📄 `Fichier ancien` : contient les anciennes remarques
     - 📄 `Fichier nouveau` : contient les nouvelles remarques
