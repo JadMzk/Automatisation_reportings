@@ -66,7 +66,7 @@ def traiter_fichiers(ancien_path, nouveau_path):
         remarques_map = df_ancien.set_index('key')["Remarques"].to_dict()
 
         # Ajout des remarques dans le fichier nouveau
-        df_nouveau["Remarques_ancien"] = df_nouveau["key"].map(remarques_map)
+        df_nouveau["Remarques"] = df_nouveau["key"].map(remarques_map)
 
         # Suppression de la clé temporaire
         df_nouveau.drop(columns=["key"], inplace=True)
